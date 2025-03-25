@@ -25,28 +25,28 @@ jobs:
         run: npm ci
 
       - name: Wait for application to be ready
-        run: npx wait-on http://localhost:3000
+        run: npx wait-on http://localhost:3000 && sleep 10s
 
       - name: Start application
         run: npm start &
         env:
           PORT: 3000
 
-      - name: Run Cypress tests
+      - name: Run Nexmedis_Test
         run: npx cypress run
         env:
           CI: true
 
       - name: Upload Cypress screenshots on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
           path: cypress/screenshots
 
       - name: Upload Cypress videos on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
           path: cypress/videos
