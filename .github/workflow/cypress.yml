@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Nexmedis_Test
 
 on:
   push:
@@ -22,14 +22,31 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Wait for application to be ready
+        run: npx wait-on http://localhost:3000
 
       - name: Start application
         run: npm start &
         env:
-          CI: true
+          PORT: 3000
 
       - name: Run Cypress tests
         run: npx cypress run
         env:
           CI: true
+
+      - name: Upload Cypress screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload Cypress videos on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: cypress/videos
