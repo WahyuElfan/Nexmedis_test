@@ -24,8 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install wait-on
+        run: npm install -g wait-on
+      
       - name: Wait for application to be ready
-        run: npx wait-on http://localhost:3000 && sleep 10s
+        run:  wait-on http://localhost:3000 && sleep 10s
 
       - name: Start application
         run: npm start &
