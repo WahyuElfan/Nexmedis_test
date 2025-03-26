@@ -6,7 +6,7 @@ const createEsbuildPlugin =
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "http://localhost:3000",
+    // baseUrl: "http://localhost:3000",
     async setupNodeEvents(on, config) {
       // Add Cucumber preprocessor
       await preprocessor.addCucumberPreprocessorPlugin(on, config);

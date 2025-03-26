@@ -1,4 +1,4 @@
-name: Nexmedis_Test
+name: Nexmedis Tests
 
 on:
   push:
@@ -27,32 +27,9 @@ jobs:
       - name: Start application
         run: npm start &
         env:
-          PORT: 3000
+          CI: true
 
-      - name: Tunggu aplikasi siap
-        run: npx wait-on http://localhost:3000 && sleep 10
-
-      - name: Cek apakah aplikasi berjalan
-        run: netstat -ano | findstr :3000 || echo "Server tidak berjalan"
-
-      - name: Periksa log aplikasi
-        run: cat app.log || echo "Log aplikasi tidak ditemukan"
-
-      - name: Run Nexmedis_Test
+      - name: Run Cypress tests
         run: npx cypress run
         env:
           CI: true
-
-      - name: Upload Cypress screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-
-      - name: Upload Cypress videos on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-videos
-          path: cypress/videos
