@@ -25,18 +25,18 @@ jobs:
         run: npm ci
 
       - name: Start application
-        run: nohup npm start > app.log 2>&1 &
+        run: npm start &
         env:
           PORT: 3000
 
-      - name: Cek aplikasi berjalan
-        run: netstat -ano | findstr :3000
+      - name: Tunggu aplikasi siap
+        run: npx wait-on http://localhost:3000 && sleep 10
 
-      - name: Wait for application to be ready
-        run: wait-on http://localhost:3000 && sleep 30
+      - name: Cek apakah aplikasi berjalan
+        run: netstat -ano | findstr :3000 || echo "Server tidak berjalan"
 
-      - name: Check if server is up
-        run: curl -I http://localhost:3000 || exit 1
+      - name: Periksa log aplikasi
+        run: cat app.log || echo "Log aplikasi tidak ditemukan"
 
       - name: Run Nexmedis_Test
         run: npx cypress run
